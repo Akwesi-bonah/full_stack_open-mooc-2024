@@ -17,8 +17,8 @@ const StatisticsLine = ({ text, value }) => (
     <td>{value}</td>
   </tr>
 );
-const Statistics = ({ good, neutral, bad }) => {
-  const total = good + neutral + bad;
+const Statistics = ({ good, neutral, bad , all}) => {
+  const total = all
   const average = total === 0 ? 0 : (good - bad) / total;
   const positive = total === 0 ? 0 : (good / total) * 100;
 
@@ -81,7 +81,7 @@ const App = () => {
       <p>average {average}</p>
       <p>positive {positive} %</p> */}
 
-      <Statistics good={clicks.good} neutral={clicks.neutral} bad={clicks.bad}></Statistics>
+      <Statistics good={clicks.good} neutral={clicks.neutral} bad={clicks.bad} all={clicks.all}></Statistics>
     </div>
   )
 }
