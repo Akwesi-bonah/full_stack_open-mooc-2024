@@ -8,9 +8,9 @@ const App = () => {
   const [error, setError] = useState('');
   const [selectedCountry, setSelectedCountry] = useState(null);
 
-  // Fetch all countries when the component mounts
   useEffect(() => {
     getAll().then(data => {
+      console.log(data)
       setAllCountries(data);
     }).catch(error => {
       console.error('Error fetching all countries:', error);
@@ -46,7 +46,6 @@ const App = () => {
     setSelectedCountry(null);
   };
 
-  // Handle country button click
   const handleShowDetails = (country) => {
     setSelectedCountry(country);
   };
