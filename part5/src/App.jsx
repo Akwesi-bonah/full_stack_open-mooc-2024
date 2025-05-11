@@ -33,41 +33,38 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-
+  
     try {
+      // Attempt to log in the user
       const user = await loginService.login({
         username,
         password,
       });
-
-      if (user) {
-        window.localStorage.setItem("loggedBlogAppUser", JSON.stringify(user));
-        console.log(window.localStorage.getItem("loggedBlogAppUser"));
-
-        if (user.token) {
-          blogService.setToken(user.token);
-          setSuccessMessage("Login successful")
-          setTimeout(() => setSuccessMessage(null), 5000);
-        } else {
-          setErrorMessage("Token is missing");
-          setTimeout(() => setErrorMessage(null), 5000);
-          return;
-        }
-
-        setUser(user);
-        setUsername("");
-        setPassword("");
-        console.log(user);
-      } else {
-        setErrorMessage("Wrong Credentials");
-        setTimeout(() => setErrorMessage(null), 5000);
-      }
+  
+      // Handle successful login
+      window.localStorage.setItem("loggedBlogAppUser", JSON.stringify(user));
+      blogService.setToken(user.token);
+  
+      setSuccessMessage("Login successful");
+      setTimeout(() => setSuccessMessage(null), 5000);
+  
+      setUser(user);
+      setUsername("");
+      setPassword("");
     } catch (error) {
-      setErrorMessage("An Error Occurred");
+      if (error.response && error.response.status === 401) {
+        setErrorMessage("Invalid username or password");
+      } else if (error.response && error.response.status === 400) {
+        setErrorMessage("Missing username or password");
+      } else {
+        setErrorMessage("An error occurred. Please try again later.");
+      }
+  
       setTimeout(() => setErrorMessage(null), 5000);
-      console.log(error);
+      console.error("Login error:", error);
     }
   };
+  
   
   const handleAddBlog = async (newBlog) => {
     if (!user) {
@@ -137,7 +134,7 @@ const App = () => {
 
   const LoginForm = () => {
     return (
-      <form onSubmit={handleLogin}>
+      <form onSubmit={handleLogin} className="loginForm">
         <h2>Login in to application</h2>
         <div>
           username{" "}
@@ -145,6 +142,7 @@ const App = () => {
             type="text"
             value={username}
             name="username"
+            data-testid='username'
             onChange={({ target }) => setUsername(target.value)}
           ></input>
         </div>
@@ -154,6 +152,7 @@ const App = () => {
             type="password"
             value={password}
             name="password"
+            data-testid="password"
             onChange={({ target }) => setPassword(target.value)}
           ></input>
         </div>

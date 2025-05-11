@@ -1,0 +1,16 @@
+{
+  "name": "part5-e2e",
+  "version": "1.0.0",
+  "description": "React end to end testing",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:report": "playwright show-report"
+  },
+  "author": "Akwesi-Bona",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.49.1",
+    "@types/node": "^22.10.5"
+  }
+}
